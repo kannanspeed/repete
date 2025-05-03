@@ -37,7 +37,6 @@ const WORD_LIST = [
 
 function App() {
   const [currentWord, setCurrentWord] = useState<string>('');
-  const [score, setScore] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<string>('');
   const [isListening, setIsListening] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -51,14 +50,12 @@ function App() {
   const getNextWord = () => {
     const randomIndex = Math.floor(Math.random() * WORD_LIST.length);
     setCurrentWord(WORD_LIST[randomIndex]);
-    setScore(null);
     setFeedback('');
   };
 
   const startListening = () => {
     setErrorMessage('');
     setFeedback('');
-    setScore(null);
     
     // Check if browser supports SpeechRecognition
     if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
@@ -82,33 +79,25 @@ function App() {
     
     recognition.onresult = (event: SpeechRecognitionEvent) => {
       const speechResult = event.results[0][0].transcript.toLowerCase().trim();
-      const confidence = event.results[0][0].confidence;
       
       // Compare with the current word
       const isCorrect = speechResult === currentWord.toLowerCase();
       
-      // Calculate score (0-100)
-      // Base score on both exact match and confidence
-      let calculatedScore = 0;
-      
       if (isCorrect) {
-        calculatedScore = Math.round(confidence * 100);
         setFeedback('Correct! 🎉');
       } else {
-        // For incorrect words, measure similarity and use it as part of score
+        // For incorrect words, measure similarity
         const similarity = calculateSimilarity(speechResult, currentWord.toLowerCase());
-        calculatedScore = Math.round(similarity * confidence * 100);
         
-        if (calculatedScore > 80) {
+        if (similarity > 0.8) {
           setFeedback('Very close! Try again');
-        } else if (calculatedScore > 50) {
+        } else if (similarity > 0.5) {
           setFeedback('Getting there. Keep practicing!');
         } else {
           setFeedback('Try again. Focus on pronunciation');
         }
       }
       
-      setScore(calculatedScore);
       setIsListening(false);
     };
     
@@ -208,19 +197,6 @@ function App() {
       {feedback && (
         <div className="feedback">
           {feedback}
-        </div>
-      )}
-      
-      {score !== null && (
-        <div className="score-display">
-          <p>Your score:</p>
-          <div className="score">{score}</div>
-          <div className="score-bar">
-            <div 
-              className="score-fill"
-              style={{ width: `${score}%` }}
-            ></div>
-          </div>
         </div>
       )}
     </div>

@@ -1,13 +1,13 @@
 # Repetee - Voice Pronunciation Practice App
 
-A free, simple AI-powered voice pronunciation scoring application. Repetee displays words for users to repeat, then uses the Web Speech API to evaluate pronunciation and provide a score.
+A free, simple AI-powered voice pronunciation application. Repetee displays words for users to repeat, then uses the Web Speech API to evaluate pronunciation and provide feedback.
 
 ## Features
 
 - Display of words for pronunciation practice
 - Voice recognition using browser's built-in SpeechRecognition API
-- Pronunciation scoring based on similarity and confidence
-- Visual feedback with a score bar
+- Pronunciation evaluation based on similarity
+- Visual feedback on pronunciation accuracy
 - Responsive design for mobile and desktop
 
 ## Technologies Used
@@ -55,7 +55,7 @@ The built files will be in the `dist` directory.
 1. Open the app in your browser
 2. A random word will be displayed on the screen
 3. Click "Start Speaking" and say the word
-4. The app will evaluate your pronunciation and provide a score
+4. The app will evaluate your pronunciation and provide feedback
 5. Click "Next Word" to practice with a different word
 
 ## Browser Compatibility
